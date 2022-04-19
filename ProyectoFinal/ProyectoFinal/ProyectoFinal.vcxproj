@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Proyecto_Final.cpp" />
+    <ClInclude Include="Model.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Model.h" />
+    <ClCompile Include="316299022_REPORTE8_GPO04.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

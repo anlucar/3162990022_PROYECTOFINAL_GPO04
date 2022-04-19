@@ -1,11 +1,11 @@
-﻿  Proyecto_Final.cpp
+﻿  316299022_REPORTE8_GPO04.cpp
 C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Model.h(213,24): error C3861: 'stbi_load': no se encontró el identificador
 C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Model.h(233,3): error C3861: 'stbi_image_free': no se encontró el identificador
 C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Model.h(238,3): error C3861: 'stbi_image_free': no se encontró el identificador
-C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Proyecto_Final.cpp(179,30): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Proyecto_Final.cpp(318,17): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Proyecto_Final.cpp(319,17): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Proyecto_Final.cpp(323,21): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Proyecto_Final.cpp(324,21): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Proyecto_Final.cpp(326,13): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\Proyecto_Final.cpp(327,13): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\316299022_REPORTE8_GPO04.cpp(204,30): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\316299022_REPORTE8_GPO04.cpp(361,17): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\316299022_REPORTE8_GPO04.cpp(362,17): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\316299022_REPORTE8_GPO04.cpp(366,21): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\316299022_REPORTE8_GPO04.cpp(367,21): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\316299022_REPORTE8_GPO04.cpp(369,13): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pumas\Desktop\Repositorio\3162990022_PROYECTOFINAL_GPO04\ProyectoFinal\ProyectoFinal\316299022_REPORTE8_GPO04.cpp(370,13): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
