@@ -42,6 +42,8 @@ bool firstMouse = true;
 // Light attributes
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 bool active;
+float i;
+float j;
 
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
@@ -52,7 +54,7 @@ glm::vec3 pointLightPositions[] = {
 };
 
 glm::vec3 spotLightPosition[] = {
-    glm::vec3(-3.5f, 2.0f, -3.5f)
+    glm::vec3(-6.4f, 5.0f, 0.0f)
 };
 
 float vertices[] = {
@@ -161,10 +163,10 @@ int main()
     Shader lightingShader("Shaders/lighting.vs", "Shaders/lighting.frag");
     Shader lampShader("Shaders/lamp.vs", "Shaders/lamp.frag");
     
-    Model Piso((char*)"Models/Esfera/Piso.obj");
-    Model Esfera((char*)"Models/Esfera/Esfera.obj");
-    Model Box((char*)"Models/Box/Box.obj");
+    Model Piso((char*)"Models/Bar/Piso.obj");
     Model Bottle((char*)"Models/Bottles/Whiskey_bottle/Bourbon2.obj");
+    Model Table((char*)"Models/Mesa/table1.obj");
+    Model Chair((char*)"Models/Silla/chair2.obj");
 
 
     // First, set the container's VAO (and VBO)
@@ -311,31 +313,52 @@ int main()
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-
         glm::mat4 model(1);
-
-    
-
         //Carga de modelo 
         view = camera.GetViewMatrix();  
         model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
         Piso.Draw(lightingShader);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
-        //Box.Draw(lightingShader);
-        //Esfera.Draw(lightingShader);
+        //COLUMNAS DE MESAS Y SILLAS
+        for (j = -4.0; j <= 4.0; j += 4.0) {
+            for (i = -2.8;i >= -10.0;i -= 1.2) {
+                //MESAS
+                model = glm::mat4(1);
+                model = glm::translate(model, glm::vec3(i, 0.0f, j));
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Table.Draw(lightingShader);
+                //SILLAS_ENFRENTE
+                model = glm::mat4(1);
+                model = glm::translate(model, glm::vec3(i, 0.0f, j+1));
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Chair.Draw(lightingShader);
+                //SILLAS_ATRAS
+                model = glm::mat4(1);
+                model = glm::translate(model, glm::vec3(i, 0.0f, j-1));
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Chair.Draw(lightingShader);
+            }
+        }
 
         glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         model = glm::mat4(1);
-        model = glm::rotate(model, glm::radians((float)glfwGetTime() * 10.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(-4.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
-        glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 0.0, 0.75);
-        Bottle.Draw(lightingShader);
+        //glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 1.0, 1.0);
+        //Table.Draw(lightingShader);
 
         glDisable(GL_BLEND); //Desactiva el canal alfa
         glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 1.0, 1.0);
