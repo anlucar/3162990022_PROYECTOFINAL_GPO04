@@ -3,19 +3,39 @@ illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
+map_Kd marmol.png
+Ni 1.00
+newmtl phong1SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Wood_DIFF.jpg
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks Wood_SPEC.jpg
+Ns 18.00
+newmtl phong2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Fabric_DIFF.jpg
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks Fabric_BUMP.jpg
+Ns 18.00
+newmtl table3:lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
 map_Kd Madera.png
 Ni 1.00
-newmtl lambert3SG
+newmtl table3:lambert3SG
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 map_Kd Metal.png
-Ni 1.00
-newmtl table1:lambert2SG
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-map_Kd SoporteMesa.jpg
 Ni 1.00
