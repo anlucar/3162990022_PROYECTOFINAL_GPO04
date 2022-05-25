@@ -47,12 +47,17 @@ bool active;
 bool active2;
 bool flag = false;
 bool flag2 = false;
+bool flag3 = false;
 bool anim = false;
 bool anim2 = false;
+bool anim3 = false;
 float rot = -90.0f;
 float rot2 = 0.0f;
+float rot3 = -90.0f;
 float i;
 float j;
+float k;
+float l;
 float tiempo;
 
 // Positions of the point lights
@@ -67,7 +72,13 @@ glm::vec3 pointLightPositions[] = {
     glm::vec3(0.0f, 11.725f, 12.3f),
     glm::vec3(6.35f, 9.518f, 12.3f),
     glm::vec3(6.45f, 10.6f, 12.3f),
-    glm::vec3(6.45f, 11.725f, 12.3f)
+    glm::vec3(6.45f, 11.725f, 12.3f),
+    glm::vec3(10.2f, 5.0f, -11.70f), //Letrero (Staff only)
+    glm::vec3(-8.9f, 5.5f, -16.2f), //Refrigerador 1
+    glm::vec3(-8.9f, 5.5f, -20.2f), //Refrigerador 2
+    glm::vec3(10.5f, 0.2f, -20.5f), //Congelador (contenedor 1)
+    glm::vec3(10.5f, 0.2f, -18.5f), //Congelador (contendor 2)
+    glm::vec3(0.0f, 7.8f, -18.5f) //Lampara (bodega)
 };
 
 glm::vec3 spotLightPosition[] = {
@@ -121,6 +132,7 @@ float vertices[] = {
 glm::vec3 Light1 = glm::vec3(0);
 glm::vec3 Light2 = glm::vec3(0);
 glm::vec3 Light3 = glm::vec3(0);
+glm::vec3 Light4 = glm::vec3(1);
 
 //Animación botellas
 float movKitX = 0.0;
@@ -188,21 +200,30 @@ int main()
     Shader SkyBoxshader("Shaders/SkyBox.vs", "Shaders/SkyBox.frag"); //Shader del SkyBox
     
     Model Floor((char*)"Models/Bar/Piso.obj"); //Piso del bar
+    Model Floor_W((char*)"Models/Bodega/Piso.obj"); //Piso de la bodega
     Model Roof1((char*)"Models/Bar/Techo.obj"); //Techo del bar (parte cubica)
     Model Roof2((char*)"Models/Bar/Techo2.obj"); //Techo del bar (parte cilindrica)
-    Model Lamp1((char*)"Models/Lampara/Lampara1.obj"); //Lampara 1
-    Model Lamp2((char*)"Models/Lampara/Lampara2.obj"); //Lampara 2
-    Model Wall1((char*)"Models/Bar/Pared_izq.obj"); //Pared izquierda
-    Model Wall2((char*)"Models/Bar/Pared_trasera.obj"); //Pared trasera
-    Model Wall3((char*)"Models/Bar/Pared_der.obj"); //Pared derecha
-    Model Wall4((char*)"Models/Bar/Pared_frontal.obj"); //Pared frontal
+    Model Roof_W((char*)"Models/Bodega/Techo.obj"); //Techo de la bodega
+    Model Lamp1((char*)"Models/Lampara/Lampara1.obj"); //Lampara 1 (bar)
+    Model Lamp2((char*)"Models/Lampara/Lampara2.obj"); //Lampara 2 (bar)
+    Model Lamp3((char*)"Models/Lampara/Lampara_bodega.obj"); //Lampara (bodega)
+    Model Wall1((char*)"Models/Bar/Pared_izq.obj"); //Pared izquierda del bar
+    Model Wall2((char*)"Models/Bar/Pared_trasera2.obj"); //Pared trasera del bar
+    Model Wall3((char*)"Models/Bar/Pared_der.obj"); //Pared derecha del bar
+    Model Wall4((char*)"Models/Bar/Pared_frontal.obj"); //Pared frontal del bar
+    Model Wall1_W((char*)"Models/Bodega/Pared_izq.obj"); //Pared izquierda bodega
+    Model Wall2_W((char*)"Models/Bodega/Pared_trasera.obj"); //Pared trasera bodega
+    Model Wall3_W((char*)"Models/Bodega/Pared_der.obj"); //Pared derecha bodega
     Model Bush1((char*)"Models/Bar/Arbusto.obj"); //Arbusto1 (decoracion)
     Model Bush2((char*)"Models/Bar/Arbusto2.obj"); //Arbusto2 (decoracion)
     Model Window1((char*)"Models/Bar/Ventana_izq.obj"); //Ventana izquierda
     Model Window2((char*)"Models/Bar/Ventana_der.obj"); //Ventana derecha
-    Model Door((char*)"Models/Bar/Puerta.obj"); //Puerta de cristal
+    Model Door((char*)"Models/Bar/Puerta.obj"); //Puerta de cristal (entrada)
+    Model Door_W((char*)"Models/Bar/Puerta.obj"); //Puerta de cristal (bodega)
     Model Title1((char*)"Models/Bar/Titulo.obj"); //Fachada frontal del bar
     Model Title2((char*)"Models/Bar/Titulo2.obj"); //Titulo del bar (The Nim Bar)
+    Model Sign((char*)"Models/Bodega/Letrero.obj"); //Letrero bodega (Staff only)
+    Model Light_S((char*)"Models/Bodega/Luz_letrero.obj"); //Luz letrero
     Model Table((char*)"Models/Mesa/table1.obj"); //Mesa
     Model Chair((char*)"Models/Silla/chair2.obj"); //Silla
     Model Bench((char*)"Models/Banco/barstool3.obj"); //Banco
@@ -213,7 +234,14 @@ int main()
     Model Bottle1((char*)"Models/Bottles/Beer_bottle/beer2.obj"); //Botella de cerveza
     Model Bottle2((char*)"Models/Bottles/Whiskey_bottle/whisky.obj"); //Botella de whisky
     Model Bottle3((char*)"Models/Bottles/Wine_bottle/wine.obj"); //Botella de vino
-    Model Rack((char*)"Models/Estante/estante.obj"); //Estante de licores
+    Model Rack((char*)"Models/Estante/estante.obj"); //Estante de licores (bar)
+    Model Rack_W((char*)"Models/Estante/estante_bodega.obj"); //Estante de licores (bodega)
+    Model Fridge((char*)"Models/Refrigerador/Refrigerador.obj"); //Refrigerador
+    Model Door_F((char*)"Models/Refrigerador/Puerta_refri.obj"); //Perta del refrigerador
+    Model Frame_F((char*)"Models/Refrigerador/Marco_refri.obj"); //Marco de la puerta del refrigerador
+    Model Barrel((char*)"Models/Barril/Barril.obj"); //Barril
+    Model Freezer((char*)"Models/Congelador/Congelador.obj"); //Congelador
+    Model Door_Freezer((char*)"Models/Congelador/Puertas_congelador.obj"); //Puertas congelador
 
     GLfloat skyboxVertices[] = { //Vertices para construir el SkyBox
         // Positions
@@ -521,6 +549,60 @@ int main()
         glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[19].linear"), 0.22f);
         glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[19].quadratic"), 0.20f);
 
+        // Point light 21
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[20].position"), pointLightPositions[11].x, pointLightPositions[11].y, pointLightPositions[11].z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[20].ambient"), Light1.x, Light1.y, Light1.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[20].diffuse"), Light1.x, Light1.y, Light1.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[20].specular"), 1.0f, 1.0f, 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[20].constant"), 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[20].linear"), 0.22f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[20].quadratic"), 0.20f);
+
+        // Point light 22
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[21].position"), pointLightPositions[12].x, pointLightPositions[12].y, pointLightPositions[12].z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[21].ambient"), Light4.x, Light4.y, Light4.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[21].diffuse"), Light4.x, Light4.y, Light4.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[21].specular"), 1.0f, 1.0f, 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[21].constant"), 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[21].linear"), 0.35f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[21].quadratic"), 0.44f);
+
+        // Point light 23
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[22].position"), pointLightPositions[13].x, pointLightPositions[13].y, pointLightPositions[13].z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[22].ambient"), Light4.x, Light4.y, Light4.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[22].diffuse"), Light4.x, Light4.y, Light4.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[22].specular"), 1.0f, 1.0f, 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[22].constant"), 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[22].linear"), 0.35f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[22].quadratic"), 0.44f);
+
+        // Point light 24
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[23].position"), pointLightPositions[14].x, pointLightPositions[14].y, pointLightPositions[14].z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[23].ambient"), Light4.x, Light4.y, Light4.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[23].diffuse"), Light4.x, Light4.y, Light4.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[23].specular"), 1.0f, 1.0f, 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[23].constant"), 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[23].linear"), 0.35f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[23].quadratic"), 0.44f);
+
+        // Point light 25
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[24].position"), pointLightPositions[15].x, pointLightPositions[15].y, pointLightPositions[15].z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[24].ambient"), Light4.x, Light4.y, Light4.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[24].diffuse"), Light4.x, Light4.y, Light4.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[24].specular"), 1.0f, 1.0f, 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[24].constant"), 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[24].linear"), 0.35f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[24].quadratic"), 0.44f);
+
+        // Point light 26
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[25].position"), pointLightPositions[16].x, pointLightPositions[16].y, pointLightPositions[16].z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[25].ambient"), Light1.x, Light1.y, Light1.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[25].diffuse"), Light1.x, Light1.y, Light1.z);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[25].specular"), 1.0f, 1.0f, 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[25].constant"), 1.0f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[25].linear"), 0.09f);
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[25].quadratic"), 0.032f);
+
         // SpotLight
         glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight.position"), spotLightPosition[0].x, spotLightPosition[0].y, spotLightPosition[0].z);
         glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight.direction"), 0.0f, 0.0f, 0.0f);
@@ -551,13 +633,19 @@ int main()
 
         glm::mat4 model(1);
         //Carga de modelo 
-        view = camera.GetViewMatrix();  
-        //PISO Y TECHO
+        view = camera.GetViewMatrix();
+        //PISO Y TECHO (BAR Y BODEGA)
         model = glm::mat4(1); //Setea la matriz en el origen del mundo
         model = glm::translate(model, glm::vec3(0.2f, -0.2f, 0.4f)); //Traslada el objeto
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
         Floor.Draw(lightingShader); //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-0.1f, -0.2f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Floor_W.Draw(lightingShader); //Dibuja el objeto especificado
         model = glm::mat4(1); //Setea la matriz en el origen del mundo
         model = glm::translate(model, glm::vec3(-0.16f, -0.2f, 0.0f)); //Traslada el objeto
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
@@ -570,7 +658,13 @@ int main()
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
         Roof2.Draw(lightingShader);  //Dibuja el objeto especificado
-        //PAREDES
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-0.16f, -0.2f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Roof_W.Draw(lightingShader);  //Dibuja el objeto especificado
+        //PAREDES (BAR Y BODEGA)
         model = glm::mat4(1); //Setea la matriz en el origen del mundo
         model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f)); //Traslada el objeto
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
@@ -607,6 +701,36 @@ int main()
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
         Title2.Draw(lightingShader);  //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Wall1_W.Draw(lightingShader);  //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Wall2_W.Draw(lightingShader);  //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz modelo en el origen del mundo
+        model = glm::translate(model, glm::vec3(-0.2f, -0.2f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Wall3_W.Draw(lightingShader);  //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(0.0f, -0.25f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Sign.Draw(lightingShader); //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(0.0f, -0.25f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Light_S.Draw(lightingShader); //Dibuja el objeto especificado
         //COLUMNAS DE MESAS Y SILLAS
         for (j = -8.0f;j <= 4.0f;j += 4.0f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
             for (i = -2.8f;i >= -10.0f;i -= 1.2f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
@@ -675,15 +799,80 @@ int main()
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
         Counter4.Draw(lightingShader); //Dibuja el objeto especificado
-        //ESTANTE
+        //ESTANTES
         model = glm::mat4(1); //Setea la matriz en el origen del mundo
         model = glm::translate(model, glm::vec3(4.4f, 1.55f, -3.0f)); //Traslada el objeto
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
-        Rack.Draw(lightingShader); //Dibuja el objeto especificado
-        //BOTELLAS
+        Rack.Draw(lightingShader); //Dibuja el objeto especificado (ESTANTE BAR)
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(0.0f, -0.2f, -12.5f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Rack_W.Draw(lightingShader); //Dibuja el objeto especificado (ESTANTE BODEGA)
+        //REFRIGERADORES
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-5.5f, -0.15f, -10.5f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Fridge.Draw(lightingShader); //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-8.9f, 1.525f, -20.2f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Frame_F.Draw(lightingShader); //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-5.5f, -0.15f, -6.5f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Fridge.Draw(lightingShader); //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-8.9f, 1.525f, -16.2f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Frame_F.Draw(lightingShader); //Dibuja el objeto especificado
+        //CONGELADOR
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Freezer.Draw(lightingShader); //Dibuja el objeto especificado
+        //LAMPARA BODEGA
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-0.2f, -0.2f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        Lamp3.Draw(lightingShader); //Dibuja el objeto especificado
+        //BARRILES
+        k = 2.0f;
+        l = 12.0f;
+        for (j = -0.2f;j <= 9.0f;j += 2.3f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+            for (i = k;i <= l;i += 2.5f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j, 0.0f)); //Traslada el objeto
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Barrel.Draw(lightingShader); //Dibuja el objeto especificado
+            }
+            k += 1.25f;
+            l -= 1.25f;
+        }
+        //BOTELLAS (ESTANTE BAR)
         for (j = 10.8f;j <= 11.2f;j += 0.4f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
             for (i = -4.9f;i <= -1.7f;i += 0.4f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
                 //CERVEZA
@@ -713,10 +902,111 @@ int main()
                 Bottle3.Draw(lightingShader); //Dibuja el objeto especificado
             }
         }
+        //BOTELLAS (ESTANTE BODEGA)
+        for (j = 1.9f;j <= 5.1f;j += 3.2f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+            for (i = -3.5;i <= -2.3;i += 0.4f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+                //WHISKY
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j, -24.25f)); //Traslada el objeto
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Bottle2.Draw(lightingShader); //Dibuja el objeto especificado
+                //VINO
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j + 1.6, -24.25f)); //Traslada el objeto
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Bottle3.Draw(lightingShader); //Dibuja el objeto especificado
+            }
+        }
+        for (j = 1.9f;j <= 5.1f;j += 3.2f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+            for (i = -1.3;i <= -0.1;i += 0.4f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+                //WHISKY
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j, -24.25f)); //Traslada el objeto
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Bottle2.Draw(lightingShader); //Dibuja el objeto especificado
+                //VINO
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j + 1.6, -24.25f)); //Traslada el objeto
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Bottle3.Draw(lightingShader); //Dibuja el objeto especificado
+            }
+        }
+        for (j = 1.9f;j <= 5.1f;j += 3.2f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+            for (i = 0.9;i <= 1.7;i += 0.4f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+                //WHISKY
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j, -24.25f)); //Traslada el objeto
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Bottle2.Draw(lightingShader); //Dibuja el objeto especificado
+                //VINO
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j + 1.6, -24.25f)); //Traslada el objeto
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Bottle3.Draw(lightingShader); //Dibuja el objeto especificado
+            }
+        }
+        for (j = 1.9f;j <= 5.1f;j += 3.2f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+            for (i = 3.1;i <= 4.3;i += 0.4f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+                //WHISKY
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j, -24.25f)); //Traslada el objeto
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Bottle2.Draw(lightingShader); //Dibuja el objeto especificado
+                //VINO
+                model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                model = glm::translate(model, glm::vec3(i, j + 1.6, -24.25f)); //Traslada el objeto
+                model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                Bottle3.Draw(lightingShader); //Dibuja el objeto especificado
+            }
+        }
+        //CERVEZAS (REFRIGERADOR 1)
+        for (k = 2.5f;k <= 3.55f;k += 1.05f) {
+            for (j = -15.4f;j >= -17.0f;j -= 0.4f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+                for (i = -9.6f;i >= -10.3f;i -= 0.3f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distinta
+                    model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                    model = glm::translate(model, glm::vec3(i, k, j)); //Traslada el objeto
+                    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+                    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                    glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                    Bottle1.Draw(lightingShader); //Dibuja el objeto especificado
+                }
+            }
+        }
+        //CERVEZAS (REFRIGERADOR 2)
+        for (k = 2.5f;k <= 3.55f;k += 1.05f) {
+            for (j = -19.4f;j >= -21.0f;j -= 0.4f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distintas
+                for (i = -9.6f;i >= -10.3f;i -= 0.3f) { //Se usa un ciclo for para dibujar varias copias del mismo objeto pero posiciones distinta
+                    model = glm::mat4(1); //Setea la matriz en el origen del mundo
+                    model = glm::translate(model, glm::vec3(i, k, j)); //Traslada el objeto
+                    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+                    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+                    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                    glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+                    Bottle1.Draw(lightingShader); //Dibuja el objeto especificado
+                }
+            }
+        }
 
         glEnable(GL_BLEND);//Activa la funcionalidad para trabajar el canal alfa
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //VENTANAS Y PUERTA
+        //VENTANAS Y PUERTAS
         model = glm::mat4(1); //Setea la matriz en el origen del mundo
         model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f)); //Traslada el objeto
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
@@ -737,7 +1027,39 @@ int main()
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
         glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 1.0, 0.65); //Transparenta el objeto con un color blanco
-        Door.Draw(lightingShader); //Dibuja el objeto especificado
+        Door.Draw(lightingShader); //Dibuja el objeto especificado (PUERTA ENTRADA)
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(11.67f, -0.25f, -11.75f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(rot3), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 1.0, 0.65); //Transparenta el objeto con un color blanco
+        Door_W.Draw(lightingShader); //Dibuja el objeto especificado (PUERTA BODEGA)
+        //PUERTAS REFRIGERADORES
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-8.9f, 1.525f, -20.2f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 1.0, 0.65); //Transparenta el objeto con un color blanco
+        Door_F.Draw(lightingShader); //Dibuja el objeto especificado
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(-8.9f, 1.525f, -16.2f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); //Escala el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 1.0, 0.65); //Transparenta el objeto con un color blanco
+        Door_F.Draw(lightingShader); //Dibuja el objeto especificado
+        //PUERTAS CONGELADOR
+        model = glm::mat4(1); //Setea la matriz en el origen del mundo
+        model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f)); //Traslada el objeto
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Rota el objeto
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "activaTransparencia"), 0);
+        glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 1.0, 0.65); //Transparenta el objeto con un color blanco
+        Door_Freezer.Draw(lightingShader); //Dibuja el objeto especificado
         //ADORNOS
         model = glm::mat4(1); //Setea la matriz en el origen del mundo
         model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f)); //Traslada el objeto
@@ -793,7 +1115,7 @@ int main()
         model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         // Draw the light object (using light's vertex attributes)
-        for (GLuint i = 0; i < 11; i++)
+        for (GLuint i = 0; i < 17; i++)
         {
             model = glm::mat4(1); //Setea la matriz en el origen del mundo
             model = glm::translate(model, pointLightPositions[i]); //Traslada el objeto
@@ -863,7 +1185,7 @@ void DoMovement()
         camera.ProcessKeyboard(RIGHT, deltaTime);
     }
 
-    if (anim) //Animacion de la puerta (abrir)
+    if (anim) //Animacion de la puerta principal (abrir)
     {
         if (rot > -180.0f) //Modifica la rotacion de la puerta para abirla
         {
@@ -874,7 +1196,7 @@ void DoMovement()
             flag = true;
     }
 
-    if (not anim) //Animacion de la puerta (cerrar)
+    if (not anim) //Animacion de la puerta principal (cerrar)
     {
         if (rot < -90.0f) //Modifica la rotacion de la puerta para cerrarla
         {
@@ -885,7 +1207,7 @@ void DoMovement()
             flag = false;
     }
 
-    if (anim2) //Animacion de la puerta  del bar (abrir)
+    if (anim2) //Animacion de la puerta de la barra (abrir)
     {
         if (rot2 < 90.0f) //Modifica la rotacion de la puerta del bar para levantarla
         {
@@ -896,7 +1218,7 @@ void DoMovement()
             flag2 = true;
     }
 
-    if (not anim2) //Animacion de la puerta del bar (cerrar)
+    if (not anim2) //Animacion de la puerta de la barra (cerrar)
     {
         if (rot2 > 0.0f) //Modifica la rotacion de la puerta del bar para bajarla
         {
@@ -905,6 +1227,28 @@ void DoMovement()
         }
         else
             flag2 = false;
+    }
+
+    if (anim3) //Animacion de la puerta de la bodega (abrir)
+    {
+        if (rot3 > -180.0f) //Modifica la rotacion de la puerta para abirla
+        {
+            rot3 -= 2.0f;
+            flag3 = false;
+        }
+        else
+            flag3 = true;
+    }
+
+    if (not anim3) //Animacion de la puerta de la bodega (cerrar)
+    {
+        if (rot3 < -90.0f) //Modifica la rotacion de la puerta para cerrarla
+        {
+            rot3 += 2.0f;
+            flag3 = true;
+        }
+        else
+            flag3 = false;
     }
 }
 
@@ -1025,7 +1369,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
         }
     }
 
-    if (keys[GLFW_KEY_O]) //Activa la animacion de apretura y cierre de la puerta
+    if (keys[GLFW_KEY_O]) //Activa la animacion de apretura y cierre de la puerta principal
     {
         if (not flag) //Si la tecla O fue presionada
             anim = true; //Activa la animacion
@@ -1039,6 +1383,14 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
             anim2 = true; //Activa la animacion
         else
             anim2 = false;
+    }
+
+    if (keys[GLFW_KEY_L]) //Activa la animacion de apretura y cierre de la puerta de la bodega
+    {
+        if (not flag3) //Si la tecla O fue presionada
+            anim3 = true; //Activa la animacion
+        else
+            anim3 = false;
     }
 
     if (keys[GLFW_KEY_4]) //Activa la animacion de caida de botellas de vino
